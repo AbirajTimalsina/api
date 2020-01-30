@@ -63,18 +63,10 @@ router.get('/me', auth.verifyUser, (req, res, next) => {
   });
 });
 
-router.put('/me', auth.verifyUser, (req, res, next) => {
-  User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true })
-    .then(user => {
-      res.json({
-        _id: user._id,
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        username: user.username,
-        image: user.image
-      });
-    })
-    .catch(next);
+router.get('/all', auth.verifyUser, (req, res, next) => {
+  User.find()
+      .then((users) => {
+          res.json(users);
+      }).catch(next);
 });
-
 module.exports = router;

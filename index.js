@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const taskRouter = require('./routes/tasks');
 const userRouter = require('./routes/users');
+const quizRouter=require('./routes/quiz');
 const dotenv = require('dotenv').config();
 const uploadRouter = require('./routes/upload');
 const auth = require('./auth');
@@ -33,9 +34,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 app.use('/users', userRouter);
+app.use('/quiz',quizRouter);
 app.use('/upload', uploadRouter);
 app.use(auth.verifyUser);
 app.use('/tasks', taskRouter);
+
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
