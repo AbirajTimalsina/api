@@ -2,7 +2,7 @@ const express = require('express');
 const Quiz = require('../models/quiz');
 const router = express.Router();
 
-router.post('/', (req, res, next) => {
+router.post('/quiz', (req, res, next) => {
   Quiz.create({
     category: req.body.category,
     question: req.body.question,
@@ -11,9 +11,21 @@ router.post('/', (req, res, next) => {
   })
     .then(quiz => {
       res.json({status:"Successfully Inserted"});
-      console.log('status:successfully inserted');
     })
     .catch(next);
+});
+router.get('/quiz', (req, res, next) => {
+ Quiz.find()
+ .then((quiz) => {
+  res.json(quiz);
+}).catch(next);
+});
+
+router.delete('/:quizId',(req,res,next)=>{
+Quiz.findByIdAndDelete(req.params.quizId)
+.then((quiz)=>{
+    res.json({status:'quiz deleted'})
+  })
 });
 
 module.exports = router;
