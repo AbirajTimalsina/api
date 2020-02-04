@@ -10,22 +10,30 @@ router.post('/quiz', (req, res, next) => {
     incorrect_answer: req.body.incorrect_answer
   })
     .then(quiz => {
-      res.json({status:"Successfully Inserted"});
+      res.json({ status: 'Successfully Inserted' });
     })
     .catch(next);
 });
-router.get('/quiz', (req, res, next) => {
- Quiz.find()
- .then((quiz) => {
-  res.json(quiz);
-}).catch(next);
+router.get('/quiz/category', (req, res, next) => {
+  Quiz.find()
+    .then(quiz => {
+      res.json(quiz);
+    })
+    .catch(next);
 });
 
-router.delete('/:quizId',(req,res,next)=>{
-Quiz.findByIdAndDelete(req.params.quizId)
-.then((quiz)=>{
-    res.json({status:'quiz deleted'})
-  })
+router.get('/quiz/:category', (req, res, next) => {
+  Quiz.find({ category: req.params.category })
+    .then(quiz => {
+      res.json(quiz);
+    })
+    .catch(next);
+});
+
+router.delete('/:quizId', (req, res, next) => {
+  Quiz.findByIdAndDelete(req.params.quizId).then(quiz => {
+    res.json({ status: 'quiz deleted' });
+  });
 });
 
 module.exports = router;
