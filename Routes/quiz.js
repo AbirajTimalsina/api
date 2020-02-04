@@ -1,5 +1,6 @@
 const express = require('express');
 const Quiz = require('../models/quiz');
+const Category = require('../Models/category');
 const router = express.Router();
 
 router.post('/quiz', (req, res, next) => {
@@ -14,16 +15,35 @@ router.post('/quiz', (req, res, next) => {
     })
     .catch(next);
 });
-router.get('/quiz/category', (req, res, next) => {
-  Quiz.find()
-    .then(quiz => {
-      res.json(quiz);
-    })
-    .catch(next);
+
+router.post('/category',(req,res,next)=>{
+  Category.create({
+    category:req.body.category
+  })
+  .then(category=>{
+    res.json({status: 'Category Successfully Created'})
+  })
+  .catch(next);
 });
 
-router.get('/quiz/:category', (req, res, next) => {
-  Quiz.find({ category: req.params.category })
+// router.get('/quiz/category', (req, res, next) => {
+//   Quiz.find()
+//     .then(quiz => {
+//       res.json(quiz);
+//     })
+//     .catch(next);
+// });
+
+router.get('/category',(req,res,next)=>{
+  Category.find()
+    .then(category=>{
+      res.json(category)
+    })
+    .then(next);
+})
+
+router.get('/quiz/:categoryId', (req, res, next) => {
+  Quiz.find({ category: req.params.categoryId })
     .then(quiz => {
       res.json(quiz);
     })
@@ -35,5 +55,6 @@ router.delete('/:quizId', (req, res, next) => {
     res.json({ status: 'quiz deleted' });
   });
 });
+
 
 module.exports = router;
